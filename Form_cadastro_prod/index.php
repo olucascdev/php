@@ -1,5 +1,6 @@
 <?php 
     include_once "Controller/conexao.php";
+
 ?>
 
 
@@ -26,21 +27,29 @@
             <div class="col-8">
                 <form method="GET" action="Controller/salvar.php" >
                     <div class="mt-3 form-floating">
-                        <input type="number" class="form-control desabilitado" id="codigo" name="codigo" readonly >
+                        <input type="number" class="form-control desabilitado" id="codigo" name="codigo" readonly value="<?php 
+                        echo filter_input(INPUT_GET, "codigo", FILTER_SANITIZE_SPECIAL_CHARS);
+                        ?>">
                         <label for="codigo" class="form-label">Código</label>
                     </div>
                     <div class="mt-3 form-floating">
-                        <input type="text" class="form-control" id="nome" name="nome">
+                        <input type="text" class="form-control" id="nome" name="nome" value="<?php 
+                        echo filter_input(INPUT_GET, "nome", FILTER_SANITIZE_SPECIAL_CHARS);
+                        ?>">
                         <label for="nome" class="form-label">Nome do Produto</label>
                     </div>
                     <div class="mt-3 form-floating">
-                        <input type="text" class="form-control" id="valor" name="valor">
+                        <input type="text" class="form-control" id="valor" name="valor" value="<?php 
+                        echo filter_input(INPUT_GET, "valor", FILTER_SANITIZE_SPECIAL_CHARS);
+                        ?>">
                         <label for="valor" class="form-label">Valor</label>
                     </div>
                     <div class="mt-3 form-floating">
                         <div class="row">
                             <div class="col">
+                                <a href="index.php"></a>
                                 <button type="button" class="btn btn-primary form-control botaoNovo">Novo</button>
+                                </a>
                             </div>
                             <div class="col">
                                 <button type="submit" class="btn btn-primary form-control botaoSalvar">Salvar</button>
@@ -80,6 +89,10 @@
                                         <td>".$linha['prod_nome']."</td>
                                         <td>".$linha['prod_valor']."</td>
                                         <td>
+                                        <a href='?
+                                        codigo=".$linha['prod_id']."&
+                                        nome=".$linha['prod_nome']."&
+                                        valor=".$linha['prod_valor']."&'>
 
                                         <img src='Imagens/editar.png' class='imgTabela'>
 
@@ -88,6 +101,7 @@
 
                                         <a href='Controller/excluir.php?codigo=".$linha['prod_id']."'>
                                             <img src='Imagens/excluir.png' class='imgTabela'>
+                                        </a>
 
                                         </td>
                                       </tr>";
