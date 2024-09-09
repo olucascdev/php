@@ -79,8 +79,17 @@
                                         <td>".$linha['prod_id']."</td>
                                         <td>".$linha['prod_nome']."</td>
                                         <td>".$linha['prod_valor']."</td>
-                                        <td><img src='Imagens/editar.png' class='imgTabela'></td>
-                                        <td><img src='Imagens/excluir.png' class='imgTabela'></td>
+                                        <td>
+
+                                        <img src='Imagens/editar.png' class='imgTabela'>
+
+                                        </td>
+                                        <td>
+
+                                        <a href='Controller/excluir.php?codigo=".$linha['prod_id']."'>
+                                            <img src='Imagens/excluir.png' class='imgTabela'>
+
+                                        </td>
                                       </tr>";
                             }
 
