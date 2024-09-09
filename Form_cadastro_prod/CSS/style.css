@@ -1,0 +1,11 @@
+@charset "UTF8";
+
+
+.img-produto {
+    width: 100%;
+}
+
+.botaoSalvar{
+    background: rgb(252, 193, 18);
+    background-image: radial-gradient(circle,rgb(208,56,56) 0%, rgb(2348,70,56, 1) 100%);
+}
