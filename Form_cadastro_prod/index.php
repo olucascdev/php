@@ -1,7 +1,7 @@
 <?php 
     // Inclui o arquivo de conexão com o banco de dados
     include_once "Controller/conexao.php";
-
+    
 ?>
 
 
@@ -51,6 +51,12 @@
                         ?>">
                         <label for="valor" class="form-label">Valor</label>
                     </div>
+
+                    <div class="mt-3 form-floating">
+                        <input type="file" class="form-control" id="imagem" name="imagem">
+                        <label for="imagem" class="form-label">Imagem</label>
+                    </div>
+
                     <!-- Botões para novo e salvar -->
                     <div class="mt-3 form-floating">
                         <div class="row">
@@ -87,8 +93,10 @@
                             <th>Código</th>
                             <th>Nome do Produto</th>
                             <th>Valor</th>
+                            <th>Imagem</th>
                             <th>Editar</th>
                             <th>Excluir</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -99,26 +107,24 @@
                             $pesquisar = mysqli_query($conn, $sql);
                             // Itera sobre cada linha de resultado da consulta
                             while ($linha = $pesquisar->fetch_assoc()){
+                                $imagem = isset($linha['prod_imagem']) ? $linha['prod_imagem'] : 'Imagens/default.png';
                                 // Exibe cada produto em uma linha da tabela
                                 echo "<tr>
                                         <td>".$linha['prod_id']."</td>
                                         <td>".$linha['prod_nome']."</td>
                                         <td>".$linha['prod_valor']."</td>
                                         <td>
-                                        <a href='?
-                                        codigo=".$linha['prod_id']."&
-                                        nome=".$linha['prod_nome']."&
-                                        valor=".$linha['prod_valor']."&'>
-
-                                        <img src='Imagens/editar.png' class='imgTabela'>
-
+                                            <img src='".$imagem."' alt='Imagem do produto' class='img-thumbnail' style='width: 100px; height: auto;'>
                                         </td>
                                         <td>
-
-                                        <a href='Controller/excluir.php?codigo=".$linha['prod_id']."'>
-                                            <img src='Imagens/excluir.png' class='imgTabela'>
-                                        </a>
-
+                                            <a href='?codigo=".$linha['prod_id']."&nome=".$linha['prod_nome']."&valor=".$linha['prod_valor']."'>
+                                                <img src='Imagens/editar.png' class='imgTabela'>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href='Controller/excluir.php?codigo=".$linha['prod_id']."'>
+                                                <img src='Imagens/excluir.png' class='imgTabela'>
+                                            </a>
                                         </td>
                                       </tr>";
                             }
