@@ -1,3 +1,28 @@
+@charset "UTF8";
+
 .img-produto {
     width: 100%;
+}
+
+.botaoSalvar {
+    background: rgb(6, 138, 12);
+    padding: 10px 20px;
+    border: none;
+    font-weight: bold;
+}
+
+.botaoNovo {
+    background: rgb(4, 89, 185);
+    padding: 10px 20px;
+    border: none;
+    font-weight: bold;
+}
+
+.desabilitado{
+    background-color: rgba(26, 26, 26, 0.281);
+}
+
+.imgTabela{
+    width: 36px;
+
 }

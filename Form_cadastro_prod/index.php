@@ -1,10 +1,15 @@
+<?php 
+    include_once "Controller/conexao.php";
+?>
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="/Form_cadastro_prod/CSS/style.css">
+    <link rel="stylesheet" href="CSS/style.css">
     <title>Projeto</title>
 </head>
 <body>
@@ -21,7 +26,7 @@
             <div class="col-8">
                 <form method="GET" action="Controller/salvar.php" >
                     <div class="mt-3 form-floating">
-                        <input type="number" class="form-control" id="codigo" name="codigo" readonly>
+                        <input type="number" class="form-control desabilitado" id="codigo" name="codigo" readonly >
                         <label for="codigo" class="form-label">Código</label>
                     </div>
                     <div class="mt-3 form-floating">
@@ -29,13 +34,13 @@
                         <label for="nome" class="form-label">Nome do Produto</label>
                     </div>
                     <div class="mt-3 form-floating">
-                        <input type="text" class="form-control" id="valor" name="valor" readonly>
+                        <input type="text" class="form-control" id="valor" name="valor">
                         <label for="valor" class="form-label">Valor</label>
                     </div>
                     <div class="mt-3 form-floating">
                         <div class="row">
                             <div class="col">
-                                <button type="button" class="btn btn-primary form-control">Novo</button>
+                                <button type="button" class="btn btn-primary form-control botaoNovo">Novo</button>
                             </div>
                             <div class="col">
                                 <button type="submit" class="btn btn-primary form-control botaoSalvar">Salvar</button>
@@ -66,7 +71,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        <?php 
+                            $sql = 'Select * from produtos';
+                            $pesquisar = mysqli_query($conn, $sql);
+                            while ($linha = $pesquisar->fetch_assoc()){
+                                echo "<tr>
+                                        <td>".$linha['prod_id']."</td>
+                                        <td>".$linha['prod_nome']."</td>
+                                        <td>".$linha['prod_valor']."</td>
+                                        <td><img src='Imagens/editar.png' class='imgTabela'></td>
+                                        <td><img src='Imagens/excluir.png' class='imgTabela'></td>
+                                      </tr>";
+                            }
+
+                        ?>
                     </tbody>
                 </table>
             </div>
