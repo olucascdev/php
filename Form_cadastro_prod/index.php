@@ -30,7 +30,7 @@
             </div>
             <div class="col-8">
                 <!-- Campo para código do produto (somente leitura) -->
-                <form method="GET" action="Controller/salvar.php" >
+                <form method="GET" action="Controller/salvar.php" enctype="multipart/form-data" >
                     <div class="mt-3 form-floating">
                         <input type="number" class="form-control desabilitado" id="codigo" name="codigo" readonly value="<?php 
                         echo filter_input(INPUT_GET, "codigo", FILTER_SANITIZE_SPECIAL_CHARS);
@@ -54,7 +54,7 @@
 
                     <div class="mt-3 form-floating">
                         <input type="file" class="form-control" id="imagem" name="imagem">
-                        <label for="imagem" class="form-label">Imagem</label>
+                        <label for="imagem" class="form-label">arquivo</label>
                     </div>
 
                     <!-- Botões para novo e salvar -->
@@ -106,29 +106,29 @@
                             // Executa a consulta no banco de dados
                             $pesquisar = mysqli_query($conn, $sql);
                             // Itera sobre cada linha de resultado da consulta
-                            while ($linha = $pesquisar->fetch_assoc()){
-                                $imagem = isset($linha['prod_imagem']) ? $linha['prod_imagem'] : 'Imagens/default.png';
+                            while ($linha = $pesquisar->fetch_assoc()) {
+                                $nomeimagem = isset($linha['prod_imagem']) ? $linha['prod_imagem'] : 'Imagens/default.png';
                                 // Exibe cada produto em uma linha da tabela
-                                echo "<tr>
-                                        <td>".$linha['prod_id']."</td>
-                                        <td>".$linha['prod_nome']."</td>
-                                        <td>".$linha['prod_valor']."</td>
+                                echo "
+                                <tr>
+                                        <td>" . htmlspecialchars($linha['prod_id']) . "</td>
+                                        <td>" . htmlspecialchars($linha['prod_nome']) . "</td>
+                                        <td>" . htmlspecialchars($linha['prod_valor']) . "</td>
                                         <td>
-                                            <img src='".$imagem."' alt='Imagem do produto' class='img-thumbnail' style='width: 100px; height: auto;'>
+                                            <img src='" . htmlspecialchars($nomeimagem) . "' alt='Imagem do produto' class='img-thumbnail' style='width: 100px; height: auto;'/>
                                         </td>
                                         <td>
-                                            <a href='?codigo=".$linha['prod_id']."&nome=".$linha['prod_nome']."&valor=".$linha['prod_valor']."'>
+                                            <a href='?codigo=" . htmlspecialchars($linha['prod_id']) . "&nome=" . urlencode($linha['prod_nome']) . "&valor=" . urlencode($linha['prod_valor']) . "'>
                                                 <img src='Imagens/editar.png' class='imgTabela'>
                                             </a>
                                         </td>
                                         <td>
-                                            <a href='Controller/excluir.php?codigo=".$linha['prod_id']."'>
+                                            <a href='Controller/excluir.php?codigo=" . htmlspecialchars($linha['prod_id']) . "'>
                                                 <img src='Imagens/excluir.png' class='imgTabela'>
                                             </a>
                                         </td>
                                       </tr>";
                             }
-
                         ?>
                     </tbody>
                 </table>

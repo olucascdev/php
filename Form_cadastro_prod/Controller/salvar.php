@@ -1,58 +1,77 @@
 <?php 
-    // Inclui o arquivo de conexão com o banco de dados
-    include_once "conexao.php";
-    // Recebe e sanitiza os parâmetros da URL
-    $codigo = filter_input(INPUT_GET, "codigo", FILTER_SANITIZE_SPECIAL_CHARS);
-    $nome = filter_input(INPUT_GET, "nome", FILTER_SANITIZE_SPECIAL_CHARS);
-    // Substitui vírgulas por pontos no valor e sanitiza
-    $valor = str_replace(",",".",filter_input(INPUT_GET, "valor",FILTER_SANITIZE_SPECIAL_CHARS));
-    $imagem = '';
-    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
-        $imagem_tmp = $_FILES['imagem']['tmp_name'];
-        $imagem_nome = $_FILES['imagem']['name'];
-        $imagem_ext = strtolower(pathinfo($imagem_nome, PATHINFO_EXTENSION));
-        $imagem_destino = 'uploads/' . uniqid() . '.' . $imagem_ext;
-        move_uploaded_file($imagem_tmp, $imagem_destino); // Move o arquivo para o diretório de destino
-    } else {
-        $imagem_destino = ''; // Se não houver imagem, defina um valor padrão ou nulo
-    }
+
+include_once "conexao.php";
     
-        // Verifica se o código é maior que 0 para decidir se é uma atualização ou inserção
-        if($codigo > 0){
-            // Atualiza o produto existente com base no código
-            $sql = "UPDATE produtos SET prod_nome='$nome',prod_valor= $valor, foto='$imagem_destino' WHERE prod_id=$codigo;";
 
-        } else {
-            // Insere um novo produto na tabela
-            $sql = "INSERT INTO produtos (prod_nome, prod_valor, foto) VALUES ('$nome', $valor, '$imagem_destino')";
+// Recebe os dados do formulário
+$codigo = filter_input(INPUT_POST, "codigo", FILTER_SANITIZE_SPECIAL_CHARS);
+$nome = filter_input(INPUT_POST, "nome", FILTER_SANITIZE_SPECIAL_CHARS);
+$valor = filter_input(INPUT_POST, "valor", FILTER_SANITIZE_SPECIAL_CHARS);
 
-        }
+// Verifica se o valor não está nulo antes de aplicar o str_replace
+if (!is_null($valor)) {
+    $valor = str_replace(",", ".", $valor);
+}
 
-    echo $sql;
-   
+// Diretório onde as imagens serão salvas
+$diretorio_imagens = '../img/';
 
-        // Executa a consulta SQL
+// Verifica se uma imagem foi enviada
+if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == UPLOAD_ERR_OK) {
+    $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
+    $nome_imagem = uniqid() . '.' . $extensao;
+    $caminho_imagem = $diretorio_imagens . $nome_imagem;
+
+    // Move o arquivo para o diretório de destino
+    if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminho_imagem)) {
+        echo "Imagem enviada com sucesso!";
+    } else {
+        echo "Erro ao mover a imagem!";
+    }
+} else {
+    // Se não foi enviada uma nova imagem, define um padrão
+    $caminho_imagem = '../img/default.png';
+}
+
+// Verifica se os campos obrigatórios estão preenchidos
+if (!empty($nome) && !empty($valor)) {
+    // Verifica se é uma atualização ou inserção
+    if ($codigo > 0) {
+        // Atualiza o produto existente
+        $sql = "UPDATE produtos SET prod_nome='$nome', prod_valor=$valor, prod_imagem='$caminho_imagem' WHERE prod_id=$codigo;";
+    } else {
+        // Insere um novo produto
+        $sql = "INSERT INTO produtos (prod_nome, prod_valor, prod_imagem) VALUES ('$nome', $valor, '$caminho_imagem')";
+    }
+
+    // Executa a query
     $inserir = mysqli_query($conn, $sql);
 
-        if($inserir){
-            // Verifica se a consulta foi executada com sucesso
-         echo "
+    if ($inserir) {
+        echo "
             <script>
                 alert('Salvo com sucesso');
                 window.location.href='../index.php';
             </script>
-         ";
-
-        } else {
-            // Se houver um erro, exibe uma mensagem de erro e redireciona para a página inicial
-          echo "
+        ";
+    } else {
+        echo "
             <script>
                 alert('Erro ao Salvar');
                 window.location.href='../index.php';
-            </script>";
-         }
-    // Fecha a conexão com o banco de dados
-    mysqli_close($conn);
+            </script>
+        ";
+    }
+} else {
+    echo "
+        <script>
+            alert('Preencha todos os campos!');
+            window.location.href='../index.php';
+        </script>
+    ";
+}
+
+mysqli_close($conn);
 
 
 
