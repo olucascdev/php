@@ -6,15 +6,22 @@
     $nome = filter_input(INPUT_GET, "nome", FILTER_SANITIZE_SPECIAL_CHARS);
     // Substitui vírgulas por pontos no valor e sanitiza
     $valor = str_replace(",",".",filter_input(INPUT_GET, "valor",FILTER_SANITIZE_SPECIAL_CHARS));
-    $imagem = '';
-    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
-        $imagem_tmp = $_FILES['imagem']['tmp_name'];
-        $imagem_nome = $_FILES['imagem']['name'];
-        $imagem_ext = strtolower(pathinfo($imagem_nome, PATHINFO_EXTENSION));
-        $imagem_destino = 'uploads/' . uniqid() . '.' . $imagem_ext;
-        move_uploaded_file($imagem_tmp, $imagem_destino); // Move o arquivo para o diretório de destino
-    } else {
-        $imagem_destino = ''; // Se não houver imagem, defina um valor padrão ou nulo
+        if (!file_exists($_FILES['arquivo']['name'])) {
+
+        $pt_file =  '../img_itens' . $_FILES['arquivo']['name'];
+
+        if ($pt_file != '../img_itens') {
+
+            $destino =  '../img_itens' . $_FILES['arquivo']['name'];
+            $arquivo_tmp = $_FILES['arquivo']['tmp_name'];
+            move_uploaded_file($arquivo_tmp, $destino);
+            chmod($destino, 0644);
+
+            $nomeimagem =  '../img_itens' . $_FILES['arquivo']['name'];
+        } elseif ($_POST['valor'] != NULL) {
+
+            $nomeimagem = $_POST['valor'];
+        }
     }
     
         // Verifica se o código é maior que 0 para decidir se é uma atualização ou inserção
