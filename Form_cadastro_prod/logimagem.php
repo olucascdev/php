@@ -23,7 +23,7 @@
     echo"<script> alert('extensão invalida'); document.location.href = 'logimagem.php';</script>";
 
     }else{ 
-    if ($tamanhoImagem > 1000000){
+    if ($tamanhoImagem > 10000000000){
     echo"<script> alert('muitao grande, meninao'); document.location.href = 'logimagem.php';</script>";
 
     }else{
@@ -32,9 +32,10 @@
     $novoNomeImagem .= '.' . $imagemExtensao;
     move_uploaded_file($nometmp,'img/'. $novoNomeImagem);
 
+
     $query= "INSERT INTO ts2 (nome, imagem) VALUES ('$nome','$novoNomeImagem')";
     mysqli_query($conn, $query);
-    echo"<script> alert('sucess add'); document.location.href = 'teste2.php';</script>";
+    echo"<script> alert('sucess add'); document.location.href = 'index2.php';</script>";
 
 
     }
