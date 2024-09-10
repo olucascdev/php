@@ -48,7 +48,7 @@
                            <td><?php echo $i++; ?></td>
                            <td><?php echo $row["nome"]; ?></td> <!-- Mudar o nome para name caso der erro-->
                            <td><img src="img/<?php echo $row['imagem']; ?>"  width="64px" title="<?php echo $row['imagem']; ?>"> </td>     
-+
+
                         </tr>
                         <?php endforeach;?>   
                 </table>
