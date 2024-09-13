@@ -13,25 +13,6 @@ if (!is_null($valor)) {
     $valor = str_replace(",", ".", $valor);
 }
 
-// Diretório onde as imagens serão salvas
-$diretorio_imagens = '../img/';
-
-// Verifica se uma imagem foi enviada
-if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == UPLOAD_ERR_OK) {
-    $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
-    $nome_imagem = uniqid() . '.' . $extensao;
-    $caminho_imagem = $diretorio_imagens . $nome_imagem;
-
-    // Move o arquivo para o diretório de destino
-    if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminho_imagem)) {
-        echo "Imagem enviada com sucesso!";
-    } else {
-        echo "Erro ao mover a imagem!";
-    }
-} else {
-    // Se não foi enviada uma nova imagem, define um padrão
-    $caminho_imagem = '../img/default.png';
-}
 
 // Verifica se os campos obrigatórios estão preenchidos
 if (!empty($nome) && !empty($valor)) {
